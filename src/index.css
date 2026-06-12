@@ -1,0 +1,341 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ========================================
+   CSS Custom Properties
+   ======================================== */
+:root {
+  --gradient-primary: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
+  --gradient-secondary: linear-gradient(135deg, #ec4899 0%, #f43f5e 100%);
+  --gradient-success: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+  --gradient-warning: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+  --gradient-danger: linear-gradient(135deg, #ef4444 0%, #f87171 100%);
+  --gradient-info: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
+  --gradient-bg-dark: linear-gradient(135deg, #0f172a 0%, #1e1b4b 30%, #0f172a 60%, #1a1a2e 100%);
+  --gradient-bg-light: linear-gradient(135deg, #f0f4ff 0%, #e8ecf4 50%, #f5f3ff 100%);
+}
+
+/* ========================================
+   Base Styles
+   ======================================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* Dark mode body */
+.dark body {
+  background: var(--gradient-bg-dark);
+  color: #e2e8f0;
+}
+
+/* Light mode body */
+.light body {
+  background: var(--gradient-bg-light);
+  color: #1e293b;
+}
+
+/* ========================================
+   Scrollbar
+   ======================================== */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(99, 102, 241, 0.3);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(99, 102, 241, 0.5);
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: rgba(99, 102, 241, 0.4);
+}
+
+/* ========================================
+   Component Utilities (Tailwind @layer)
+   ======================================== */
+@layer components {
+  /* --- Glassmorphism --- */
+  .glass {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  }
+
+  .glass-light {
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+  }
+
+  /* --- Gradient Backgrounds --- */
+  .gradient-primary { background: var(--gradient-primary); }
+  .gradient-secondary { background: var(--gradient-secondary); }
+  .gradient-success { background: var(--gradient-success); }
+  .gradient-warning { background: var(--gradient-warning); }
+  .gradient-danger { background: var(--gradient-danger); }
+  .gradient-info { background: var(--gradient-info); }
+
+  /* --- Stat Card --- */
+  .stat-card {
+    @apply relative overflow-hidden rounded-2xl p-6 transition-all duration-300;
+    @apply hover:scale-[1.02] hover:shadow-xl;
+  }
+
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  .stat-card::after {
+    content: '';
+    position: absolute;
+    bottom: -30px;
+    left: -30px;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  /* --- Buttons --- */
+  .btn-primary {
+    @apply px-6 py-2.5 rounded-xl font-semibold text-white transition-all duration-300;
+    @apply bg-primary-600 hover:bg-primary-700 active:scale-95;
+    @apply shadow-lg shadow-primary-600/25 hover:shadow-xl hover:shadow-primary-600/35;
+    @apply focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2;
+  }
+
+  .btn-success {
+    @apply px-6 py-2.5 rounded-xl font-semibold text-white transition-all duration-300;
+    @apply bg-emerald-600 hover:bg-emerald-700 active:scale-95;
+    @apply shadow-lg shadow-emerald-600/25 hover:shadow-xl hover:shadow-emerald-600/35;
+    @apply focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2;
+  }
+
+  .btn-danger {
+    @apply px-6 py-2.5 rounded-xl font-semibold text-white transition-all duration-300;
+    @apply bg-rose-600 hover:bg-rose-700 active:scale-95;
+    @apply shadow-lg shadow-rose-600/25 hover:shadow-xl hover:shadow-rose-600/35;
+    @apply focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2;
+  }
+
+  .btn-ghost {
+    @apply px-6 py-2.5 rounded-xl font-semibold transition-all duration-300;
+    @apply hover:bg-white/10 active:scale-95;
+    @apply focus:outline-none focus:ring-2 focus:ring-primary-500;
+  }
+
+  .btn-outline {
+    @apply px-6 py-2.5 rounded-xl font-semibold transition-all duration-300;
+    @apply border-2 border-primary-500 text-primary-500;
+    @apply hover:bg-primary-500 hover:text-white active:scale-95;
+    @apply focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2;
+  }
+
+  /* --- Input Fields --- */
+  .input-field {
+    @apply w-full px-4 py-3 rounded-xl border transition-all duration-300;
+    @apply focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent;
+    @apply placeholder:text-gray-400;
+  }
+
+  .dark .input-field {
+    @apply bg-white/5 border-white/10 text-white;
+  }
+
+  .light .input-field {
+    @apply bg-white border-gray-200 text-gray-900;
+  }
+
+  /* --- Card --- */
+  .card {
+    @apply rounded-2xl transition-all duration-300;
+  }
+
+  .dark .card {
+    @apply bg-white/5 border border-white/10;
+  }
+
+  .light .card {
+    @apply bg-white border border-gray-100 shadow-card;
+  }
+
+  /* --- Badge --- */
+  .badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold;
+  }
+
+  .badge-success {
+    @apply badge bg-emerald-500/10 text-emerald-400 border border-emerald-500/20;
+  }
+
+  .badge-danger {
+    @apply badge bg-rose-500/10 text-rose-400 border border-rose-500/20;
+  }
+
+  .badge-primary {
+    @apply badge bg-primary-500/10 text-primary-400 border border-primary-500/20;
+  }
+
+  /* --- Sidebar --- */
+  .sidebar-link {
+    @apply flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all duration-200;
+  }
+
+  .dark .sidebar-link {
+    @apply text-gray-400 hover:text-white hover:bg-white/10;
+  }
+
+  .light .sidebar-link {
+    @apply text-gray-500 hover:text-gray-900 hover:bg-gray-100;
+  }
+
+  .sidebar-link.active {
+    @apply text-white;
+    background: var(--gradient-primary);
+    @apply shadow-lg shadow-primary-600/25;
+  }
+
+  .light .sidebar-link.active {
+    @apply text-white;
+    background: var(--gradient-primary);
+    @apply shadow-lg shadow-primary-600/25;
+  }
+}
+
+/* ========================================
+   Skeleton Loading Animation
+   ======================================== */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.skeleton {
+  border-radius: 8px;
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+.dark .skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.04) 25%,
+    rgba(255, 255, 255, 0.08) 50%,
+    rgba(255, 255, 255, 0.04) 75%
+  );
+  background-size: 200% 100%;
+}
+
+.light .skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.04) 25%,
+    rgba(0, 0, 0, 0.08) 50%,
+    rgba(0, 0, 0, 0.04) 75%
+  );
+  background-size: 200% 100%;
+}
+
+/* ========================================
+   Print Styles
+   ======================================== */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  body {
+    background: white !important;
+    color: black !important;
+  }
+
+  .card,
+  .glass,
+  .glass-light {
+    box-shadow: none !important;
+    border: 1px solid #e5e7eb !important;
+    background: white !important;
+    backdrop-filter: none !important;
+  }
+}
+
+/* ========================================
+   Miscellaneous
+   ======================================== */
+/* Smooth focus ring for accessibility */
+:focus-visible {
+  outline: 2px solid #6366f1;
+  outline-offset: 2px;
+}
+
+/* Selection color */
+::selection {
+  background: rgba(99, 102, 241, 0.3);
+  color: inherit;
+}
+
+/* Disable text selection on interactive elements */
+.no-select {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Attendance status transitions */
+.attendance-present {
+  @apply transition-all duration-300;
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(52, 211, 153, 0.1) 100%);
+  border-color: rgba(16, 185, 129, 0.3);
+}
+
+.attendance-absent {
+  @apply transition-all duration-300;
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(248, 113, 113, 0.1) 100%);
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+/* Chart container responsive */
+.chart-container {
+  @apply w-full;
+  min-height: 300px;
+}
+
+/* Tooltip override for dark mode */
+.dark .recharts-tooltip-wrapper .recharts-default-tooltip {
+  background: #1e293b !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 12px !important;
+}
