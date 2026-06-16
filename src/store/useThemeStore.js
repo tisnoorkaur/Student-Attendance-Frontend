@@ -13,7 +13,7 @@ function getInitialTheme() {
   } catch {
     // localStorage may be unavailable
   }
-  return true; // default to dark mode
+  return false; // default to light mode
 }
 
 const useThemeStore = create((set) => ({

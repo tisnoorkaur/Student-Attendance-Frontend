@@ -1,8 +1,12 @@
 import { motion } from 'framer-motion'
 import { Pencil, Trash2 } from 'lucide-react'
 import { getInitials, getAvatarColor } from '@/utils/avatarUtils'
+import useAuthStore from '@/store/useAuthStore'
 
 export default function StudentCard({ student, onEdit, onDelete }) {
+  const { user } = useAuthStore()
+  const isAdmin = user?.role === 'admin'
+
   return (
     <motion.div
       layout
@@ -39,26 +43,28 @@ export default function StudentCard({ student, onEdit, onDelete }) {
         </div>
 
         {/* Actions */}
-        <div className="flex items-center gap-1 transition-opacity duration-200">
-          <button
-            onClick={() => onEdit(student)}
-            className="p-2 rounded-lg transition-colors duration-200
-              dark:hover:bg-white/10 hover:bg-gray-100
-              dark:text-gray-400 text-gray-500 hover:text-indigo-500"
-            aria-label="Edit student"
-          >
-            <Pencil className="w-4 h-4" />
-          </button>
-          <button
-            onClick={() => onDelete(student)}
-            className="p-2 rounded-lg transition-colors duration-200
-              dark:hover:bg-white/10 hover:bg-gray-100
-              dark:text-gray-400 text-gray-500 hover:text-rose-500"
-            aria-label="Delete student"
-          >
-            <Trash2 className="w-4 h-4" />
-          </button>
-        </div>
+        {isAdmin && (
+          <div className="flex items-center gap-1 transition-opacity duration-200">
+            <button
+              onClick={() => onEdit(student)}
+              className="p-2 rounded-lg transition-colors duration-200
+                dark:hover:bg-white/10 hover:bg-gray-100
+                dark:text-gray-400 text-gray-500 hover:text-indigo-500"
+              aria-label="Edit student"
+            >
+              <Pencil className="w-4 h-4" />
+            </button>
+            <button
+              onClick={() => onDelete(student)}
+              className="p-2 rounded-lg transition-colors duration-200
+                dark:hover:bg-white/10 hover:bg-gray-100
+                dark:text-gray-400 text-gray-500 hover:text-rose-500"
+              aria-label="Delete student"
+            >
+              <Trash2 className="w-4 h-4" />
+            </button>
+          </div>
+        )}
       </div>
     </motion.div>
   )

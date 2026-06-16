@@ -8,8 +8,7 @@ import {
   Loader2,
   FileSpreadsheet,
   ChevronLeft,
-  ChevronRight,
-  ClipboardList
+  ChevronRight
 } from 'lucide-react';
 import PageWrapper from '@/components/PageWrapper';
 import StudentCard from '@/components/StudentCard';
@@ -20,6 +19,7 @@ import ConfirmDialog from '@/components/ConfirmDialog';
 import EmptyState from '@/components/EmptyState';
 import useStudentStore from '@/store/useStudentStore';
 import useClassStore from '@/store/useClassStore';
+import useAuthStore from '@/store/useAuthStore';
 
 import toast from 'react-hot-toast';
 
@@ -45,6 +45,8 @@ export default function Students() {
   } = useStudentStore();
 
   const { classes, fetchClasses } = useClassStore();
+  const { user } = useAuthStore();
+  const isAdmin = user?.role === 'admin';
 
   // Modals state
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -108,7 +110,6 @@ export default function Students() {
   const handleBulkImportComplete = async (studentsList) => {
     try {
       const result = await bulkImport(studentsList);
-
       return result;
     } catch (err) {
       throw err;
@@ -129,26 +130,28 @@ export default function Students() {
             Your Students ({total})
           </h1>
           <p className="text-sm dark:text-gray-400 text-gray-500 mt-0.5">
-            Add, edit, or remove students from your classes.
+            {isAdmin ? 'Add, edit, or remove students from your classes.' : 'View enrolled students in your classes.'}
           </p>
         </div>
 
-        <div className="flex items-center gap-2.5">
-          <button
-            onClick={() => setIsImportOpen(true)}
-            className="flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold dark:bg-white/10 dark:hover:bg-white/15 bg-gray-105 hover:bg-gray-200 dark:text-white text-gray-700 transition-all border dark:border-white/5 border-gray-250 active:scale-95"
-          >
-            <FileSpreadsheet className="w-4.5 h-4.5" />
-            Import from CSV
-          </button>
-          <button
-            onClick={handleOpenAdd}
-            className="btn-primary flex items-center justify-center gap-2 text-sm py-2 px-4 font-semibold active:scale-95"
-          >
-            <UserPlus className="w-4.5 h-4.5" />
-            + Add Student
-          </button>
-        </div>
+        {isAdmin && (
+          <div className="flex items-center gap-2.5">
+            <button
+              onClick={() => setIsImportOpen(true)}
+              className="flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold dark:bg-white/10 dark:hover:bg-white/15 bg-gray-100 hover:bg-gray-200 dark:text-white text-gray-700 transition-all border dark:border-white/5 border-gray-200 active:scale-95"
+            >
+              <FileSpreadsheet className="w-4.5 h-4.5" />
+              Import from CSV
+            </button>
+            <button
+              onClick={handleOpenAdd}
+              className="btn-primary flex items-center justify-center gap-2 text-sm py-2 px-4 font-semibold active:scale-95"
+            >
+              <UserPlus className="w-4.5 h-4.5" />
+              + Add Student
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Toolbar Filters */}
@@ -173,7 +176,7 @@ export default function Students() {
             onChange={(e) => setClassFilter(e.target.value)}
             className="bg-transparent text-sm font-semibold dark:text-white text-gray-800 focus:outline-none border-none p-0 cursor-pointer w-full"
           >
-            <option value="All" className="dark:bg-slate-900 dark:text-white text-gray-850">All Classes</option>
+            <option value="All" className="dark:bg-slate-900 dark:text-white text-gray-800">All Classes</option>
             {classes.map((c) => {
               const label = `${c.name}-${c.section}`;
               return (
@@ -198,7 +201,7 @@ export default function Students() {
             title={total === 0 ? "No Students Added Yet" : "No Matching Students"}
             description={
               total === 0
-                ? "You haven't added any students yet. Click the '+ Add Student' button above to add your first student."
+                ? (isAdmin ? "You haven't added any students yet. Click the '+ Add Student' button above to add your first student." : "There are no students enrolled in your school yet. Please ask the administrator to enroll students.")
                 : "No students match your search. Try changing the search text or class filter."
             }
             icon={Users}
@@ -235,7 +238,7 @@ export default function Students() {
                 <select
                   value={pageSize}
                   onChange={(e) => setPageSize(Number(e.target.value))}
-                  className="bg-transparent text-xs font-semibold dark:text-white text-gray-805 focus:outline-none border border-gray-300 dark:border-white/10 rounded-lg p-1 px-1.5 cursor-pointer"
+                  className="bg-transparent text-xs font-semibold dark:text-white text-gray-800 focus:outline-none border border-gray-300 dark:border-white/10 rounded-lg p-1 px-1.5 cursor-pointer"
                 >
                   <option value="10" className="dark:bg-slate-900">10</option>
                   <option value="25" className="dark:bg-slate-900">25</option>
@@ -252,7 +255,7 @@ export default function Students() {
                   className="p-1.5 rounded-lg border border-gray-300 dark:border-white/10 dark:text-white text-gray-700 hover:bg-gray-100 dark:hover:bg-white/10 transition-colors disabled:opacity-40"
                   aria-label="Previous page"
                 >
-                  <ChevronLeft className="w-4.5 h-4.5" />
+                  <ChevronLeft className="w-4 h-4" />
                 </button>
                 
                 <span className="text-xs font-bold dark:text-white text-gray-800">
@@ -265,7 +268,7 @@ export default function Students() {
                   className="p-1.5 rounded-lg border border-gray-300 dark:border-white/10 dark:text-white text-gray-700 hover:bg-gray-100 dark:hover:bg-white/10 transition-colors disabled:opacity-40"
                   aria-label="Next page"
                 >
-                  <ChevronRight className="w-4.5 h-4.5" />
+                  <ChevronRight className="w-4 h-4" />
                 </button>
               </div>
             </div>
@@ -273,43 +276,49 @@ export default function Students() {
         </div>
       )}
 
-      {/* Student Form Modal */}
-      <Modal
-        isOpen={isFormOpen}
-        onClose={() => setIsFormOpen(false)}
-        title={selectedStudent ? 'Edit Student Details' : 'Add New Student'}
-        size="md"
-      >
-        <StudentForm
-          student={selectedStudent}
-          onSubmit={handleFormSubmit}
-          onCancel={() => setIsFormOpen(false)}
-        />
-      </Modal>
+      {/* Student Form Modal (Admin Only) */}
+      {isAdmin && (
+        <Modal
+          isOpen={isFormOpen}
+          onClose={() => setIsFormOpen(false)}
+          title={selectedStudent ? 'Edit Student Details' : 'Add New Student'}
+          size="md"
+        >
+          <StudentForm
+            student={selectedStudent}
+            onSubmit={handleFormSubmit}
+            onCancel={() => setIsFormOpen(false)}
+          />
+        </Modal>
+      )}
 
-      {/* Bulk Import Modal */}
-      <Modal
-        isOpen={isImportOpen}
-        onClose={() => setIsImportOpen(false)}
-        title="Import Students from CSV File"
-        size="lg"
-      >
-        <BulkImportModal
-          onImportComplete={handleBulkImportComplete}
-          onCancel={() => setIsImportOpen(false)}
-        />
-      </Modal>
+      {/* Bulk Import Modal (Admin Only) */}
+      {isAdmin && (
+        <Modal
+          isOpen={isImportOpen}
+          onClose={() => setIsImportOpen(false)}
+          title="Import Students from CSV File"
+          size="lg"
+        >
+          <BulkImportModal
+            onImportComplete={handleBulkImportComplete}
+            onCancel={() => setIsImportOpen(false)}
+          />
+        </Modal>
+      )}
 
-      {/* Confirm Delete Dialog */}
-      <ConfirmDialog
-        isOpen={isDeleteOpen}
-        onConfirm={handleDeleteConfirm}
-        onCancel={() => setIsDeleteOpen(false)}
-        title="Remove This Student?"
-        message={`Are you sure you want to remove "${selectedStudent?.name}"? This will also delete all their attendance records. This cannot be undone.`}
-        confirmText="Yes, Remove Student"
-        variant="danger"
-      />
+      {/* Confirm Delete Dialog (Admin Only) */}
+      {isAdmin && (
+        <ConfirmDialog
+          isOpen={isDeleteOpen}
+          onConfirm={handleDeleteConfirm}
+          onCancel={() => setIsDeleteOpen(false)}
+          title="Remove This Student?"
+          message={`Are you sure you want to remove "${selectedStudent?.name}"? This will also delete all their attendance records. This cannot be undone.`}
+          confirmText="Yes, Remove Student"
+          variant="danger"
+        />
+      )}
     </PageWrapper>
   );
 }

@@ -4,49 +4,71 @@ import { motion, AnimatePresence } from 'framer-motion'
 import {
   LayoutDashboard,
   CalendarCheck,
-  Users,
   UserPlus,
   FileSpreadsheet,
   BarChart3,
-  Wifi,
-  WifiOff,
+  GraduationCap,
   Menu,
   X,
-  GraduationCap,
-  BookPlus,
-  HelpCircle
+  LogOut,
+  Shield,
+  School
 } from 'lucide-react'
 import ThemeToggle from './ThemeToggle'
 import useOnlineStatus from '@/hooks/useOnlineStatus'
-
-const navItems = [
-  { path: '/', label: 'Home', icon: LayoutDashboard, hint: 'Overview & quick actions' },
-  { path: '/attendance', label: 'Take Attendance', icon: CalendarCheck, hint: 'Mark daily attendance' },
-  { path: '/classes', label: 'Add Class', icon: GraduationCap, hint: 'Create & manage classes' },
-  { path: '/students', label: 'Add Student', icon: UserPlus, hint: 'Enroll & manage students' },
-  { path: '/reports', label: 'View Reports', icon: FileSpreadsheet, hint: 'Generate & export reports' },
-  { path: '/analytics', label: 'Analytics', icon: BarChart3, hint: 'Trends & insights' },
-]
+import useAuthStore from '@/store/useAuthStore'
 
 export default function Layout({ children }) {
   const location = useLocation()
   const { isOnline } = useOnlineStatus()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const { user, logout } = useAuthStore()
+
+  // Dynamically configure navItems based on role
+  const getNavItems = () => {
+    const items = [
+      { path: '/', label: 'Home', icon: LayoutDashboard, hint: 'Overview & quick actions' },
+      { path: '/attendance', label: 'Take Attendance', icon: CalendarCheck, hint: 'Mark daily attendance' },
+    ]
+
+    if (user?.role === 'admin') {
+      items.push(
+        { path: '/classes', label: 'Add Class', icon: GraduationCap, hint: 'Create & manage classes' },
+        { path: '/students', label: 'Add Student', icon: UserPlus, hint: 'Enroll & manage students' },
+        { path: '/schools', label: 'Manage Schools', icon: School, hint: 'Manage school accounts' }
+      )
+    } else {
+      items.push(
+        { path: '/classes', label: 'View Classes', icon: GraduationCap, hint: 'See enrolled classes' },
+        { path: '/students', label: 'View Students', icon: UserPlus, hint: 'See enrolled students' }
+      )
+    }
+
+    items.push(
+      { path: '/reports', label: 'View Reports', icon: FileSpreadsheet, hint: 'Generate & export reports' },
+      { path: '/analytics', label: 'Analytics', icon: BarChart3, hint: 'Trends & insights' }
+    )
+
+    return items
+  }
+
+  const navItems = getNavItems()
 
   const getPageTitle = () => {
     const pageTitles = {
       '/': 'Dashboard',
       '/attendance': 'Take Attendance',
-      '/classes': 'Manage Classes',
-      '/students': 'Manage Students',
+      '/classes': user?.role === 'admin' ? 'Manage Classes' : 'Enrolled Classes',
+      '/students': user?.role === 'admin' ? 'Manage Students' : 'Enrolled Students',
       '/reports': 'Reports',
-      '/analytics': 'Analytics'
+      '/analytics': 'Analytics',
+      '/schools': 'School Management'
     }
     return pageTitles[location.pathname] || 'Attendance Portal'
   }
 
   return (
-    <div className="flex min-h-screen transition-colors duration-300">
+    <div className="flex min-h-screen transition-colors duration-300 w-full">
       {/* ========================================
          Desktop Sidebar (Hidden on Mobile)
          ======================================== */}
@@ -60,11 +82,11 @@ export default function Layout({ children }) {
             <GraduationCap className="w-6 h-6" />
           </div>
           <div>
-            <h1 className="font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 tracking-tight text-lg">
+            <h1 className="font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 tracking-tight text-lg leading-tight">
               Attendance
             </h1>
             <p className="text-[10px] uppercase font-bold tracking-wider dark:text-slate-400 text-slate-500 -mt-0.5">
-              Portal v1.0
+              Portal v1.5
             </p>
           </div>
         </div>
@@ -82,7 +104,7 @@ export default function Layout({ children }) {
                 title={item.hint}
                 className={`sidebar-link ${isActive ? 'active' : ''}`}
               >
-                <Icon className={`w-5 h-5 flex-shrink-0 transition-transform duration-200 group-hover:scale-110`} />
+                <Icon className={`w-5 h-5 flex-shrink-0 transition-transform duration-200`} />
                 <div className="flex flex-col">
                   <span className="text-sm font-semibold leading-tight">{item.label}</span>
                   <span className={`text-[10px] leading-tight mt-0.5 ${isActive ? 'text-white/70' : 'dark:text-gray-500 text-gray-400'}`}>{item.hint}</span>
@@ -94,9 +116,27 @@ export default function Layout({ children }) {
 
         {/* Sidebar Footer Info */}
         <div className="p-4 border-t dark:border-white/10 border-gray-100 flex flex-col gap-2">
-          {/* Connection Status */}
+          {/* User Profile Info */}
+          {user && (
+            <div className="p-3 rounded-xl bg-gray-50 border border-gray-100 flex flex-col gap-1 dark:bg-white/5 dark:border-white/5">
+              <div className="flex items-center gap-1.5">
+                {user.role === 'admin' ? (
+                  <Shield className="w-4 h-4 text-rose-500" />
+                ) : (
+                  <School className="w-4 h-4 text-indigo-500" />
+                )}
+                <span className="text-xs font-bold text-gray-800 dark:text-slate-200 truncate max-w-[150px]">
+                  {user.schoolName}
+                </span>
+              </div>
+              <p className="text-[9px] uppercase tracking-widest text-gray-400 font-bold pl-5">
+                {user.role}
+              </p>
+            </div>
+          )}
+
+          {/* Connection Status & Logout */}
           <div className="flex items-center justify-between p-2 rounded-xl dark:bg-white/5 bg-gray-50 border border-transparent dark:border-white/5 border-gray-100">
-            <span className="text-xs font-semibold dark:text-slate-400 text-slate-500">Status</span>
             <div className="flex items-center gap-1.5">
               <span className={`relative flex h-2 w-2`}>
                 {isOnline && (
@@ -108,6 +148,13 @@ export default function Layout({ children }) {
                 {isOnline ? 'Live' : 'Offline'}
               </span>
             </div>
+            <button
+              onClick={logout}
+              className="p-1 rounded-lg text-gray-400 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/10 transition-colors"
+              title="Sign Out"
+            >
+              <LogOut className="w-4.5 h-4.5" />
+            </button>
           </div>
         </div>
       </aside>
@@ -136,7 +183,6 @@ export default function Layout({ children }) {
           </div>
 
           <div className="flex items-center gap-3">
-            {/* Online Status (Badge visible on mobile too) */}
             <div className={`hidden sm:flex items-center gap-2 px-3.5 py-1.5 rounded-full border text-xs font-semibold select-none
               ${
                 isOnline
@@ -164,9 +210,8 @@ export default function Layout({ children }) {
       </div>
 
       {/* ========================================
-         Mobile Bottom Nav / Drawer
+         Mobile Navigation Drawer
          ======================================== */}
-      {/* Mobile Drawer Backdrop */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <>
@@ -177,7 +222,6 @@ export default function Layout({ children }) {
               onClick={() => setMobileMenuOpen(false)}
               className="fixed inset-0 bg-black z-40 md:hidden"
             />
-            {/* Mobile Drawer Panel */}
             <motion.div
               initial={{ x: '-100%' }}
               animate={{ x: 0 }}
@@ -198,13 +242,13 @@ export default function Layout({ children }) {
                 <button
                   onClick={() => setMobileMenuOpen(false)}
                   className="p-2 rounded-xl dark:hover:bg-white/10 hover:bg-gray-100"
-                  aria-label="Close navigation menu"
+                  aria-label="Close menu"
                 >
                   <X className="w-5 h-5" />
                 </button>
               </div>
 
-              <nav className="flex-1 space-y-1.5">
+              <nav className="flex-1 space-y-1.5 overflow-y-auto">
                 {navItems.map((item) => {
                   const isActive = location.pathname === item.path
                   const Icon = item.icon
@@ -226,9 +270,26 @@ export default function Layout({ children }) {
                 })}
               </nav>
 
-              <div className="mt-auto pt-4 border-t dark:border-white/10 border-gray-100 flex flex-col gap-2">
+              <div className="mt-auto pt-4 border-t dark:border-white/10 border-gray-100 flex flex-col gap-3">
+                {user && (
+                  <div className="p-3 rounded-xl bg-gray-50 dark:bg-white/5 flex flex-col gap-1">
+                    <div className="flex items-center gap-1.5">
+                      {user.role === 'admin' ? (
+                        <Shield className="w-4 h-4 text-rose-500" />
+                      ) : (
+                        <School className="w-4 h-4 text-indigo-500" />
+                      )}
+                      <span className="text-xs font-bold text-gray-800 dark:text-slate-200 truncate">
+                        {user.schoolName}
+                      </span>
+                    </div>
+                    <p className="text-[9px] uppercase tracking-widest text-gray-400 font-bold pl-5">
+                      {user.role}
+                    </p>
+                  </div>
+                )}
+
                 <div className="flex items-center justify-between p-2 rounded-xl dark:bg-white/5 bg-gray-50">
-                  <span className="text-xs font-semibold dark:text-slate-400 text-slate-500">Status</span>
                   <div className="flex items-center gap-1.5">
                     <span className="relative flex h-2 w-2">
                       {isOnline && <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>}
@@ -238,6 +299,15 @@ export default function Layout({ children }) {
                       {isOnline ? 'Online' : 'Offline'}
                     </span>
                   </div>
+                  <button
+                    onClick={() => {
+                      setMobileMenuOpen(false)
+                      logout()
+                    }}
+                    className="p-1 rounded-lg text-gray-400 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/10 transition-colors"
+                  >
+                    <LogOut className="w-4.5 h-4.5" />
+                  </button>
                 </div>
               </div>
             </motion.div>
@@ -248,7 +318,7 @@ export default function Layout({ children }) {
       {/* Mobile Sticky Bottom Nav Bar */}
       <div className="fixed bottom-0 left-0 right-0 h-16 border-t md:hidden flex items-center justify-around px-2 z-30 transition-colors duration-300
         dark:bg-slate-900/95 dark:border-white/10 bg-white/95 border-gray-200 backdrop-blur-md">
-        {navItems.map((item) => {
+        {navItems.slice(0, 5).map((item) => {
           const isActive = location.pathname === item.path
           const Icon = item.icon
 
@@ -264,7 +334,7 @@ export default function Layout({ children }) {
                 }`}
             >
               <Icon className="w-5 h-5" />
-              <span className="text-[10px] font-medium tracking-tight">{item.label}</span>
+              <span className="text-[10px] font-medium tracking-tight truncate max-w-[60px]">{item.label}</span>
             </Link>
           )
         })}

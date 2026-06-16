@@ -7,9 +7,21 @@ const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
  */
 export async function apiFetch(endpoint, options = {}) {
   const url = `${BASE_URL}${endpoint}`;
+  
+  let token = null;
+  try {
+    token = localStorage.getItem('auth_token');
+  } catch (e) {
+    // Ignore
+  }
+
   const defaultHeaders = {
     'Content-Type': 'application/json',
   };
+
+  if (token) {
+    defaultHeaders['Authorization'] = `Bearer ${token}`;
+  }
 
   const config = {
     ...options,
