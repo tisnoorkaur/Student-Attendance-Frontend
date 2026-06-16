@@ -176,8 +176,8 @@ export default function Attendance() {
       {classes.length === 0 ? (
         <div className="card p-16 text-center border dark:border-white/5 border-gray-100 dark:bg-white/5 bg-white shadow-md">
           <EmptyState
-            title="Create a class section first"
-            description="You need to set up class sections and enroll students before you can mark daily attendance."
+            title="Create a Class First"
+            description="Before taking attendance, you need to create at least one class. Go to 'Add Class' in the sidebar to get started."
             icon={BookOpen}
           />
         </div>
@@ -193,8 +193,8 @@ export default function Attendance() {
       ) : stats.total === 0 ? (
         <div className="card p-16 text-center border dark:border-white/5 border-gray-100 dark:bg-white/5 bg-white shadow-md">
           <EmptyState
-            title="Class Roster is Empty"
-            description={`Class "${selectedClass}" currently has no students enrolled. Head over to the Students registry to enroll students first.`}
+            title="No Students in This Class"
+            description={`Class "${selectedClass}" has no students yet. Go to 'Add Student' in the sidebar to add students to this class first.`}
             icon={Users}
           />
         </div>
@@ -229,7 +229,7 @@ export default function Attendance() {
                 <div className="w-full max-w-sm flex flex-col items-center gap-6">
                   {/* Swipe tips */}
                   <span className="hidden sm:block text-[10px] uppercase font-bold tracking-wider dark:text-gray-400 text-gray-500 select-none animate-pulse">
-                    ← Swipe Left (Absent) | Drag Card | Swipe Right (Present) →
+                    👈 Drag Left = Absent | Drag Right = Present 👉
                   </span>
 
                   <AnimatePresence mode="popLayout">
@@ -263,9 +263,8 @@ export default function Attendance() {
                         Class {currentStudent.classSection}
                       </div>
 
-                      {/* Hotkey guides */}
                       <div className="text-[10px] text-gray-400 dark:text-slate-500 font-medium">
-                        Keyboard shortcuts: [←] Absent | [→] Present
+                        Tip: You can also use keyboard — press [←] for Absent, [→] for Present
                       </div>
                     </motion.div>
                   </AnimatePresence>
@@ -291,9 +290,9 @@ export default function Attendance() {
               ) : (
                 <div className="text-center space-y-4 py-8">
                   <CheckCircle className="w-14 h-14 text-emerald-500 mx-auto animate-bounce" />
-                  <h3 className="font-extrabold text-lg dark:text-white text-gray-800">Roster Completed!</h3>
+                  <h3 className="font-extrabold text-lg dark:text-white text-gray-800">All Done! ✨</h3>
                   <p className="text-xs dark:text-gray-400 text-gray-500 max-w-xs mx-auto">
-                    All students of Class {selectedClass} have been marked in the queue. Review the list and click save below.
+                    You've marked all students in Class {selectedClass}. Click the button below to save.
                   </p>
                   
                   <button
@@ -302,7 +301,7 @@ export default function Attendance() {
                     className="btn-primary inline-flex items-center gap-2 py-2.5 px-6 font-semibold shadow-lg shadow-indigo-500/20 active:scale-95 transition-all"
                   >
                     {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
-                    Save Attendance
+                    Save Attendance Now
                   </button>
                 </div>
               )}
@@ -317,7 +316,7 @@ export default function Attendance() {
                   className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold border dark:border-white/5 border-gray-250 dark:bg-white/5 bg-white dark:text-white text-gray-700 hover:bg-gray-50 dark:hover:bg-white/10 disabled:opacity-40 transition-colors"
                 >
                   <RotateCcw className="w-3.5 h-3.5" />
-                  Undo Last Action
+                  Undo
                 </button>
               </div>
 
@@ -327,14 +326,14 @@ export default function Attendance() {
                   disabled={activeQueue.length === 0}
                   className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-white bg-emerald-600 hover:bg-emerald-700 transition-colors disabled:opacity-50 shadow-md shadow-emerald-500/10"
                 >
-                  Mark All Present
+                  ✅ All Present
                 </button>
                 <button
                   onClick={() => markAll('absent')}
                   disabled={activeQueue.length === 0}
                   className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-white bg-rose-600 hover:bg-rose-700 transition-colors disabled:opacity-50 shadow-md shadow-rose-500/10"
                 >
-                  Mark All Absent
+                  ❌ All Absent
                 </button>
               </div>
             </div>
@@ -365,7 +364,7 @@ export default function Attendance() {
                     <div className="max-h-[380px] overflow-y-auto divide-y dark:divide-white/5 divide-gray-100">
                       {markedList.length === 0 ? (
                         <div className="p-8 text-center text-xs text-gray-400 dark:text-slate-500 font-medium">
-                          No students marked yet. Start dragging cards to fill list.
+                          No students marked yet. Drag the card or click the ✓ / ✗ buttons.
                         </div>
                       ) : (
                         markedList.map(({ student, status }) => {
@@ -432,7 +431,7 @@ export default function Attendance() {
                 className="w-full btn-primary py-3 flex items-center justify-center gap-2 font-bold shadow-lg shadow-indigo-600/15"
               >
                 {isSaving ? <Loader2 className="w-4.5 h-4.5 animate-spin" /> : <Save className="w-4.5 h-4.5" />}
-                Save Roster Attendance
+                Save Attendance
               </button>
             )}
           </div>

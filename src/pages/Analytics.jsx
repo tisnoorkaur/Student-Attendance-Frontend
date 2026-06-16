@@ -164,10 +164,10 @@ export default function Analytics() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold dark:text-white text-gray-900 tracking-tight">
-            Attendance Insights & Trends
+            📊 Analytics & Insights
           </h1>
           <p className="text-sm dark:text-gray-400 text-gray-500 mt-0.5">
-            Identify long-term attendance trends, class-wise rates, and students requiring attention.
+            See how attendance looks over time and find students who need help.
           </p>
         </div>
 
@@ -207,7 +207,7 @@ export default function Analytics() {
       {isLoading ? (
         <div className="flex flex-col items-center justify-center py-36 space-y-3">
           <Loader2 className="w-8 h-8 animate-spin text-indigo-500" />
-          <p className="text-sm dark:text-gray-400 text-gray-500">Compiling analytical databases...</p>
+          <p className="text-sm dark:text-gray-400 text-gray-500">Loading analytics...</p>
         </div>
       ) : (
         <>
@@ -218,7 +218,7 @@ export default function Analytics() {
                 <Percent className="w-6 h-6" />
               </div>
               <div>
-                <p className="text-xs font-bold text-gray-500 dark:text-gray-450 uppercase tracking-wider">Overall Avg Rate</p>
+                <p className="text-xs font-bold text-gray-500 dark:text-gray-450 uppercase tracking-wider">Average Rate</p>
                 <p className="text-xl font-black dark:text-white text-gray-900 mt-0.5">{statsSummary.avgRate}%</p>
               </div>
             </div>
@@ -228,7 +228,7 @@ export default function Analytics() {
                 <CalendarDays className="w-6 h-6" />
               </div>
               <div>
-                <p className="text-xs font-bold text-gray-500 dark:text-gray-450 uppercase tracking-wider">Total Marks Logged</p>
+                <p className="text-xs font-bold text-gray-500 dark:text-gray-450 uppercase tracking-wider">Records Logged</p>
                 <p className="text-xl font-black dark:text-white text-gray-900 mt-0.5">{statsSummary.totalLogsCount}</p>
               </div>
             </div>
@@ -238,7 +238,7 @@ export default function Analytics() {
                 <Target className="w-6 h-6" />
               </div>
               <div>
-                <p className="text-xs font-bold text-gray-500 dark:text-gray-450 uppercase tracking-wider">Highest Attendance Class</p>
+                <p className="text-xs font-bold text-gray-500 dark:text-gray-450 uppercase tracking-wider">Best Attending Class</p>
                 <p className="text-xl font-black dark:text-white text-gray-900 mt-0.5">Class {statsSummary.bestClass}</p>
               </div>
             </div>
@@ -251,7 +251,7 @@ export default function Analytics() {
             <div className="lg:col-span-2 card p-6 border dark:border-white/5 border-gray-100 dark:bg-slate-900 bg-white space-y-4 shadow-md">
               <h2 className="font-bold text-base dark:text-white text-gray-900 flex items-center gap-2">
                 <TrendingUp className="w-4.5 h-4.5 text-indigo-500" />
-                Attendance Percentage Trend
+                Attendance Over Time
               </h2>
               <div className="h-[300px] w-full">
                 <ResponsiveContainer width="100%" height="100%">
@@ -305,13 +305,13 @@ export default function Analytics() {
             <div className="lg:col-span-1 card p-6 border dark:border-white/5 border-gray-100 dark:bg-slate-900 bg-white space-y-4 shadow-md">
               <h2 className="font-bold text-base dark:text-white text-gray-900 flex items-center gap-2">
                 <BarChart3 className="w-4.5 h-4.5 text-indigo-500" />
-                Class-wise Performance
+                Attendance by Class
               </h2>
               <div className="h-[300px] w-full">
                 {classData.length === 0 ? (
                   <div className="flex flex-col items-center justify-center h-full text-center text-gray-400 text-xs py-10">
                     <Calendar className="w-8 h-8 mb-2 stroke-gray-500" />
-                    No class metrics available. Check back after marking attendance.
+                    No data yet. Take attendance first, then check back here!
                   </div>
                 ) : (
                   <ResponsiveContainer width="100%" height="100%">
@@ -362,11 +362,11 @@ export default function Analytics() {
             <div className="lg:col-span-1 card p-6 border dark:border-white/5 border-gray-100 dark:bg-slate-900 bg-white space-y-4 shadow-md">
               <h2 className="font-bold text-base dark:text-white text-gray-900 flex items-center gap-2">
                 <PieChartIcon className="w-4.5 h-4.5 text-indigo-500" />
-                Overall Present vs Absent ratio
+                Overall Present vs Absent
               </h2>
               <div className="h-[260px] w-full flex items-center justify-center">
                 {statsSummary.totalLogsCount === 0 ? (
-                  <div className="text-xs text-gray-400 font-semibold">No attendance logged yet.</div>
+                  <div className="text-xs text-gray-400 font-semibold">No attendance data yet. Take attendance to see charts!</div>
                 ) : (
                   <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
@@ -403,10 +403,10 @@ export default function Analytics() {
             <div className="lg:col-span-1 card p-6 border dark:border-white/5 border-gray-100 dark:bg-slate-900 bg-white space-y-4 shadow-md">
               <h2 className="font-bold text-base text-emerald-500 flex items-center gap-2">
                 <Award className="w-5 h-5" />
-                Exemplary Attendance (Top performers)
+                🏆 Best Attendance Students
               </h2>
               {topPresent.length === 0 ? (
-                <p className="text-sm text-gray-400 font-semibold text-center py-10">No data records computed yet.</p>
+                <p className="text-sm text-gray-400 font-semibold text-center py-10">No data yet. Take attendance to see top students!</p>
               ) : (
                 <div className="divide-y dark:divide-white/5 divide-gray-100">
                   {topPresent.map((student) => (
@@ -437,12 +437,12 @@ export default function Analytics() {
             <div className="lg:col-span-1 card p-6 border dark:border-white/5 border-gray-100 dark:bg-slate-900 bg-white space-y-4 shadow-md">
               <h2 className="font-bold text-base text-rose-500 flex items-center gap-2">
                 <AlertTriangle className="w-5 h-5" />
-                Chronic Absenteeism (Needs Attention)
+                ⚠️ Students Who Need Help (Below 85%)
               </h2>
               {topAbsent.length === 0 ? (
                 <div className="flex flex-col items-center justify-center py-6 text-center text-slate-500 text-xs h-full min-h-[160px]">
                   <Award className="w-8 h-8 text-emerald-500 mb-2" />
-                  No student attendance rates are currently below 85%!
+                  Great news! All students are above 85% attendance.
                 </div>
               ) : (
                 <div className="divide-y dark:divide-white/5 divide-gray-100">

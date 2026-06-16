@@ -115,7 +115,7 @@ export default function Classes() {
         <div className="card p-6 border dark:border-white/5 border-gray-150 dark:bg-white/5 bg-white space-y-5 shadow-lg">
           <h2 className="font-extrabold text-lg dark:text-white text-gray-900 flex items-center gap-2 pb-2 border-b dark:border-white/5 border-gray-100">
             {editingId ? <Edit2 className="w-5 h-5 text-indigo-500" /> : <Plus className="w-5 h-5 text-indigo-500" />}
-            {editingId ? 'Modify Class Section' : 'Add Class Section'}
+            {editingId ? 'Edit Class Details' : '+ Add New Class'}
           </h2>
 
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -127,10 +127,11 @@ export default function Classes() {
                 type="text"
                 value={form.name}
                 onChange={(e) => setForm((prev) => ({ ...prev, name: e.target.value }))}
-                placeholder="e.g. 10, 11, Grade 12"
+                placeholder="e.g. 10, 11, 12"
                 className="input-field text-sm"
                 required
               />
+              <p className="text-[10px] dark:text-gray-500 text-gray-400 mt-1">Enter the grade or class number</p>
             </div>
 
             <div>
@@ -141,10 +142,11 @@ export default function Classes() {
                 type="text"
                 value={form.section}
                 onChange={(e) => setForm((prev) => ({ ...prev, section: e.target.value }))}
-                placeholder="e.g. A, B, Alpha"
+                placeholder="e.g. A, B, C"
                 className="input-field text-sm"
                 required
               />
+              <p className="text-[10px] dark:text-gray-500 text-gray-400 mt-1">Enter the section letter or name</p>
             </div>
 
             <div className="flex items-center gap-3 pt-2">
@@ -162,7 +164,7 @@ export default function Classes() {
                 className="btn-primary flex items-center justify-center gap-2 flex-1 py-2 text-sm font-semibold"
               >
                 {editingId ? <Save className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
-                {editingId ? 'Update' : 'Create'}
+                {editingId ? 'Save Changes' : 'Create Class'}
               </button>
             </div>
           </form>
@@ -174,7 +176,7 @@ export default function Classes() {
         <div className="flex items-center justify-between">
           <h2 className="font-extrabold text-xl dark:text-white text-gray-900 flex items-center gap-2.5">
             <GraduationCap className="w-6 h-6 text-indigo-500" />
-            Class Registry ({classes.length})
+            Your Classes ({classes.length})
           </h2>
         </div>
 
@@ -186,8 +188,8 @@ export default function Classes() {
         ) : classes.length === 0 ? (
           <div className="card p-16 text-center border dark:border-white/5 border-gray-100 dark:bg-white/5 bg-white shadow-md">
             <EmptyState
-              title="No Classes Configured"
-              description="There are currently no classes or sections set up in the portal database. Use the creation form on the left to set up your first class roster."
+              title="No Classes Created Yet"
+              description="You need to create at least one class before adding students. Use the form on the left to create your first class (e.g. Class 10-A)."
               icon={GraduationCap}
             />
           </div>
@@ -254,9 +256,9 @@ export default function Classes() {
         isOpen={isDeleteOpen}
         onConfirm={handleDeleteConfirm}
         onCancel={() => setIsDeleteOpen(false)}
-        title="Delete Class Section?"
-        message={`Are you sure you want to delete Class "${selectedClass?.name}-${selectedClass?.section}"? This action will permanently delete this class section, all enrolled students, and all associated attendance records. This cannot be undone.`}
-        confirmText="Yes, Delete Class"
+        title="Remove This Class?"
+        message={`Are you sure you want to remove Class "${selectedClass?.name}-${selectedClass?.section}"? This will delete all students in this class and their attendance records. This cannot be undone.`}
+        confirmText="Yes, Remove Class"
         variant="danger"
       />
     </PageWrapper>

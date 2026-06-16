@@ -45,7 +45,7 @@ export default function Dashboard() {
       const hasAttendance = todayStats.total > 0
       const rate = hasAttendance ? Math.round(todayStats.percentage) : 0
       const present = todayStats.present
-      
+
       setStats({
         totalClasses: classes.length,
         totalStudents: count,
@@ -67,7 +67,7 @@ export default function Dashboard() {
             const student = await getStudentById(record.studentId);
             studentName = student ? student.name : 'Unknown Student';
           } catch (e) {
-             // Ignore if student was deleted
+            // Ignore if student was deleted
           }
           return {
             id: record.id,
@@ -117,42 +117,42 @@ export default function Dashboard() {
             Welcome Back, Teacher! 👋
           </h1>
           <p className="text-sm dark:text-gray-400 text-gray-500 mt-1">
-            Here is your classroom attendance status for today, <strong>{formatDate(getTodayString())}</strong>.
+            Today is <strong>{formatDate(getTodayString())}</strong> — here's your attendance overview.
           </p>
         </div>
 
         {/* Live Status Indicator */}
         <div className="flex items-center gap-3 self-start md:self-auto bg-emerald-500/10 dark:bg-emerald-500/10 p-3 rounded-2xl border dark:border-emerald-500/20 border-emerald-200">
-           <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
-           <p className="text-xs font-bold text-emerald-700 dark:text-emerald-400">Live Connection</p>
+          <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
+          <p className="text-xs font-bold text-emerald-700 dark:text-emerald-400">Connected</p>
         </div>
       </div>
 
       {/* Stats Cards Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
         <StatCard
-          title="Total Active Classes"
+          title="Your Classes"
           value={stats.totalClasses}
           icon={GraduationCap}
           gradient="gradient-warning"
           delay={0.05}
-          subtitle="Configured sections"
+          subtitle="Classes you created"
         />
         <StatCard
-          title="Total Registered Students"
+          title="Your Students"
           value={stats.totalStudents}
           icon={Users}
           gradient="gradient-primary"
           delay={0.1}
-          subtitle="Enrolled in classes"
+          subtitle="Students enrolled"
         />
         <StatCard
-          title="Today's Attendance Rate"
+          title="Today's Rate"
           value={`${stats.rateToday}%`}
           icon={TrendingUp}
           gradient="gradient-info"
           delay={0.2}
-          subtitle={stats.rateToday > 0 ? "Marking complete" : "Mark attendance today"}
+          subtitle={stats.rateToday > 0 ? "Attendance marked" : "Not marked yet"}
         />
         <StatCard
           title="Present Today"
@@ -160,7 +160,7 @@ export default function Dashboard() {
           icon={CheckCircle2}
           gradient="gradient-success"
           delay={0.3}
-          subtitle="Checked in classes"
+          subtitle="Students present"
         />
         <StatCard
           title="Absent Today"
@@ -168,20 +168,20 @@ export default function Dashboard() {
           icon={XCircle}
           gradient="gradient-danger"
           delay={0.4}
-          subtitle="Unexcused absentees"
+          subtitle="Students absent"
         />
       </div>
 
       {/* Main Grid: Quick Actions & Recent Activity */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        
+
         {/* Quick Actions Panel */}
         <div className="lg:col-span-2 space-y-6">
           <h2 className="text-lg font-bold dark:text-white text-gray-900 flex items-center gap-2">
-            Quick Services
+            🚀 What would you like to do?
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            
+
             <Link
               to="/attendance"
               className="group relative overflow-hidden rounded-2xl p-6 transition-all duration-300 card hover:scale-[1.02] border hover:border-indigo-500/20 hover:shadow-xl hover:shadow-indigo-500/5 dark:bg-white/5 bg-white border-gray-100 dark:border-white/5"
@@ -190,10 +190,10 @@ export default function Dashboard() {
                 <CalendarCheck className="w-6 h-6" />
               </div>
               <h3 className="font-semibold text-lg dark:text-white text-gray-900 group-hover:text-indigo-500 dark:group-hover:text-indigo-400 transition-colors">
-                Mark Attendance
+                ✅ Take Attendance
               </h3>
               <p className="text-sm dark:text-gray-400 text-gray-500 mt-1">
-                Mark, edit, or reset daily attendance reports for your classes.
+                Mark students as present or absent for today's class.
               </p>
             </Link>
 
@@ -205,10 +205,25 @@ export default function Dashboard() {
                 <PlusCircle className="w-6 h-6" />
               </div>
               <h3 className="font-semibold text-lg dark:text-white text-gray-900 group-hover:text-emerald-500 dark:group-hover:text-emerald-400 transition-colors">
-                Enrol Student
+                👤 Add New Student
               </h3>
               <p className="text-sm dark:text-gray-400 text-gray-500 mt-1">
-                Add new students to your registers and edit profile profiles.
+                Add a new student to your class. You can also import from a CSV file.
+              </p>
+            </Link>
+
+            <Link
+              to="/classes"
+              className="group relative overflow-hidden rounded-2xl p-6 transition-all duration-300 card hover:scale-[1.02] border hover:border-amber-500/20 hover:shadow-xl hover:shadow-amber-500/5 dark:bg-white/5 bg-white border-gray-100 dark:border-white/5"
+            >
+              <div className="w-12 h-12 rounded-xl gradient-warning flex items-center justify-center text-white mb-4 group-hover:scale-110 transition-transform duration-300">
+                <GraduationCap className="w-6 h-6" />
+              </div>
+              <h3 className="font-semibold text-lg dark:text-white text-gray-900 group-hover:text-amber-500 dark:group-hover:text-amber-400 transition-colors">
+                📚 Add New Class
+              </h3>
+              <p className="text-sm dark:text-gray-400 text-gray-500 mt-1">
+                Create a new class section like "10-A" or "Grade 12-B".
               </p>
             </Link>
 
@@ -220,25 +235,10 @@ export default function Dashboard() {
                 <FileText className="w-6 h-6" />
               </div>
               <h3 className="font-semibold text-lg dark:text-white text-gray-900 group-hover:text-rose-500 dark:group-hover:text-rose-400 transition-colors">
-                Export Reports
+                📄 View Reports
               </h3>
               <p className="text-sm dark:text-gray-400 text-gray-500 mt-1">
-                Generate printable daily records and export them in PDF or CSV formats.
-              </p>
-            </Link>
-
-            <Link
-              to="/analytics"
-              className="group relative overflow-hidden rounded-2xl p-6 transition-all duration-300 card hover:scale-[1.02] border hover:border-amber-500/20 hover:shadow-xl hover:shadow-amber-500/5 dark:bg-white/5 bg-white border-gray-100 dark:border-white/5"
-            >
-              <div className="w-12 h-12 rounded-xl gradient-warning flex items-center justify-center text-white mb-4 group-hover:scale-110 transition-transform duration-300">
-                <BarChart2 className="w-6 h-6" />
-              </div>
-              <h3 className="font-semibold text-lg dark:text-white text-gray-900 group-hover:text-amber-500 dark:group-hover:text-amber-400 transition-colors">
-                Analytics & Trends
-              </h3>
-              <p className="text-sm dark:text-gray-400 text-gray-500 mt-1">
-                Track long-term attendance metrics, trends, and chronically absent students.
+                See attendance reports and download them as PDF or Excel files.
               </p>
             </Link>
           </div>
@@ -247,7 +247,7 @@ export default function Dashboard() {
         {/* Recent Activity Panel */}
         <div className="space-y-6">
           <h2 className="text-lg font-bold dark:text-white text-gray-900 flex items-center gap-2">
-            Recent Logs
+            📋 Recent Activity
           </h2>
           <div className="card p-6 border dark:border-white/5 border-gray-100 dark:bg-white/5 bg-white space-y-5">
             {isLoading ? (
@@ -265,7 +265,8 @@ export default function Dashboard() {
             ) : recentActivities.length === 0 ? (
               <div className="text-center py-8">
                 <Clock className="w-8 h-8 text-gray-300 dark:text-gray-600 mx-auto mb-2" />
-                <p className="text-sm dark:text-gray-400 text-gray-500">No recent activity logs available</p>
+                <p className="text-sm dark:text-gray-400 text-gray-500">No recent activity yet</p>
+                <p className="text-xs dark:text-gray-500 text-gray-400 mt-1">Activity will show up here after you take attendance</p>
               </div>
             ) : (
               <div className="relative border-l dark:border-slate-800 border-slate-100 pl-4 space-y-6 ml-2">

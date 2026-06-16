@@ -126,10 +126,10 @@ export default function Students() {
         <div>
           <h1 className="text-2xl font-bold dark:text-white text-gray-900 tracking-tight flex items-center gap-2">
             <Users className="w-6 h-6 text-indigo-500" />
-            Student Registry ({total})
+            Your Students ({total})
           </h1>
           <p className="text-sm dark:text-gray-400 text-gray-500 mt-0.5">
-            Manage your classroom rosters, view profiles, or bulk enroll students.
+            Add, edit, or remove students from your classes.
           </p>
         </div>
 
@@ -139,14 +139,14 @@ export default function Students() {
             className="flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold dark:bg-white/10 dark:hover:bg-white/15 bg-gray-105 hover:bg-gray-200 dark:text-white text-gray-700 transition-all border dark:border-white/5 border-gray-250 active:scale-95"
           >
             <FileSpreadsheet className="w-4.5 h-4.5" />
-            Bulk Import CSV
+            Import from CSV
           </button>
           <button
             onClick={handleOpenAdd}
             className="btn-primary flex items-center justify-center gap-2 text-sm py-2 px-4 font-semibold active:scale-95"
           >
             <UserPlus className="w-4.5 h-4.5" />
-            Enroll Student
+            + Add Student
           </button>
         </div>
       </div>
@@ -158,7 +158,7 @@ export default function Students() {
           <Search className="w-4 h-4 text-gray-400" />
           <input
             type="text"
-            placeholder="Search by student name or roll number..."
+            placeholder="Type a student name or roll number to find them..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="bg-transparent text-sm focus:outline-none border-none p-0 dark:text-white text-gray-800 placeholder-gray-400 w-full"
@@ -195,11 +195,11 @@ export default function Students() {
       ) : students.length === 0 ? (
         <div className="card p-16 text-center border dark:border-white/5 border-gray-100 dark:bg-white/5 bg-white shadow-md">
           <EmptyState
-            title={total === 0 ? "No Enrolled Students" : "No Matching Results"}
+            title={total === 0 ? "No Students Added Yet" : "No Matching Students"}
             description={
               total === 0
-                ? "There are currently no students registered in the database. Click Enrol or Import CSV to register."
-                : "No students matched your search criteria. Try modifying your filter dropdown or search text."
+                ? "You haven't added any students yet. Click the '+ Add Student' button above to add your first student."
+                : "No students match your search. Try changing the search text or class filter."
             }
             icon={Users}
           />
@@ -277,7 +277,7 @@ export default function Students() {
       <Modal
         isOpen={isFormOpen}
         onClose={() => setIsFormOpen(false)}
-        title={selectedStudent ? 'Edit Student Profile' : 'Enroll New Student'}
+        title={selectedStudent ? 'Edit Student Details' : 'Add New Student'}
         size="md"
       >
         <StudentForm
@@ -291,7 +291,7 @@ export default function Students() {
       <Modal
         isOpen={isImportOpen}
         onClose={() => setIsImportOpen(false)}
-        title="Bulk Import Students CSV"
+        title="Import Students from CSV File"
         size="lg"
       >
         <BulkImportModal
@@ -305,9 +305,9 @@ export default function Students() {
         isOpen={isDeleteOpen}
         onConfirm={handleDeleteConfirm}
         onCancel={() => setIsDeleteOpen(false)}
-        title="Delete Student?"
-        message={`Are you sure you want to delete "${selectedStudent?.name}"? This action will permanently remove this student and all their associated daily attendance records.`}
-        confirmText="Delete Student"
+        title="Remove This Student?"
+        message={`Are you sure you want to remove "${selectedStudent?.name}"? This will also delete all their attendance records. This cannot be undone.`}
+        confirmText="Yes, Remove Student"
         variant="danger"
       />
     </PageWrapper>

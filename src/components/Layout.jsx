@@ -5,24 +5,27 @@ import {
   LayoutDashboard,
   CalendarCheck,
   Users,
+  UserPlus,
   FileSpreadsheet,
   BarChart3,
   Wifi,
   WifiOff,
   Menu,
   X,
-  GraduationCap
+  GraduationCap,
+  BookPlus,
+  HelpCircle
 } from 'lucide-react'
 import ThemeToggle from './ThemeToggle'
 import useOnlineStatus from '@/hooks/useOnlineStatus'
 
 const navItems = [
-  { path: '/', label: 'Dashboard', icon: LayoutDashboard },
-  { path: '/attendance', label: 'Attendance', icon: CalendarCheck },
-  { path: '/classes', label: 'Classes', icon: GraduationCap },
-  { path: '/students', label: 'Students', icon: Users },
-  { path: '/reports', label: 'Reports', icon: FileSpreadsheet },
-  { path: '/analytics', label: 'Analytics', icon: BarChart3 },
+  { path: '/', label: 'Home', icon: LayoutDashboard, hint: 'Overview & quick actions' },
+  { path: '/attendance', label: 'Take Attendance', icon: CalendarCheck, hint: 'Mark daily attendance' },
+  { path: '/classes', label: 'Add Class', icon: GraduationCap, hint: 'Create & manage classes' },
+  { path: '/students', label: 'Add Student', icon: UserPlus, hint: 'Enroll & manage students' },
+  { path: '/reports', label: 'View Reports', icon: FileSpreadsheet, hint: 'Generate & export reports' },
+  { path: '/analytics', label: 'Analytics', icon: BarChart3, hint: 'Trends & insights' },
 ]
 
 export default function Layout({ children }) {
@@ -31,8 +34,15 @@ export default function Layout({ children }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   const getPageTitle = () => {
-    const activeItem = navItems.find((item) => item.path === location.pathname)
-    return activeItem ? activeItem.label : 'Class Attendance Manager'
+    const pageTitles = {
+      '/': 'Dashboard',
+      '/attendance': 'Take Attendance',
+      '/classes': 'Manage Classes',
+      '/students': 'Manage Students',
+      '/reports': 'Reports',
+      '/analytics': 'Analytics'
+    }
+    return pageTitles[location.pathname] || 'Attendance Portal'
   }
 
   return (
@@ -60,7 +70,7 @@ export default function Layout({ children }) {
         </div>
 
         {/* Navigation Links */}
-        <nav className="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
+        <nav className="flex-1 px-4 py-6 space-y-1.5 overflow-y-auto">
           {navItems.map((item) => {
             const isActive = location.pathname === item.path
             const Icon = item.icon
@@ -69,10 +79,14 @@ export default function Layout({ children }) {
               <Link
                 key={item.path}
                 to={item.path}
+                title={item.hint}
                 className={`sidebar-link ${isActive ? 'active' : ''}`}
               >
-                <Icon className={`w-5 h-5 transition-transform duration-200 group-hover:scale-110`} />
-                <span>{item.label}</span>
+                <Icon className={`w-5 h-5 flex-shrink-0 transition-transform duration-200 group-hover:scale-110`} />
+                <div className="flex flex-col">
+                  <span className="text-sm font-semibold leading-tight">{item.label}</span>
+                  <span className={`text-[10px] leading-tight mt-0.5 ${isActive ? 'text-white/70' : 'dark:text-gray-500 text-gray-400'}`}>{item.hint}</span>
+                </div>
               </Link>
             )
           })}
@@ -190,7 +204,7 @@ export default function Layout({ children }) {
                 </button>
               </div>
 
-              <nav className="flex-1 space-y-2">
+              <nav className="flex-1 space-y-1.5">
                 {navItems.map((item) => {
                   const isActive = location.pathname === item.path
                   const Icon = item.icon
@@ -202,8 +216,11 @@ export default function Layout({ children }) {
                       onClick={() => setMobileMenuOpen(false)}
                       className={`sidebar-link ${isActive ? 'active' : ''}`}
                     >
-                      <Icon className="w-5 h-5" />
-                      <span>{item.label}</span>
+                      <Icon className="w-5 h-5 flex-shrink-0" />
+                      <div className="flex flex-col">
+                        <span className="text-sm font-semibold leading-tight">{item.label}</span>
+                        <span className={`text-[10px] leading-tight mt-0.5 ${isActive ? 'text-white/70' : 'dark:text-gray-500 text-gray-400'}`}>{item.hint}</span>
+                      </div>
                     </Link>
                   )
                 })}

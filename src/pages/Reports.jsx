@@ -127,12 +127,12 @@ export default function Reports() {
         <div className="card p-5 border dark:border-white/5 border-gray-150 dark:bg-white/5 bg-white space-y-4 shadow-md">
           <h2 className="font-bold text-base dark:text-white text-gray-900 flex items-center gap-2 pb-1 border-b dark:border-white/5 border-gray-100">
             <Plus className="w-4.5 h-4.5 text-indigo-500" />
-            Compile Daily Report
+            Create New Report
           </h2>
           <form onSubmit={handleGenerate} className="space-y-4">
             <div>
               <label className="block text-xs font-semibold mb-1.5 dark:text-gray-300 text-gray-650">
-                Target Date
+                Pick a Date
               </label>
               <div className="relative">
                 <input
@@ -148,7 +148,7 @@ export default function Reports() {
 
             <div>
               <label className="block text-xs font-semibold mb-1.5 dark:text-gray-300 text-gray-650">
-                Class Section
+                Choose Class
               </label>
               <select
                 value={generateClass}
@@ -177,7 +177,7 @@ export default function Reports() {
               ) : (
                 <FileText className="w-4 h-4" />
               )}
-              {isGenerating ? 'Compiling...' : 'Compile Report'}
+              {isGenerating ? 'Creating...' : 'Create Report'}
             </button>
           </form>
         </div>
@@ -187,7 +187,7 @@ export default function Reports() {
           <div className="flex items-center justify-between px-1">
             <h2 className="font-bold text-base dark:text-white text-gray-900 flex items-center gap-2">
               <FileText className="w-4.5 h-4.5 text-indigo-500" />
-              History Log
+              Past Reports
             </h2>
             
             {/* Filter class dropdown */}
@@ -217,7 +217,7 @@ export default function Reports() {
             </div>
           ) : filteredReports.length === 0 ? (
             <div className="card p-8 text-center border dark:border-white/5 border-gray-100 dark:bg-white/5 bg-white text-gray-500 text-xs shadow-sm">
-              No reports found matching criteria.
+              No reports found. Create your first report above!
             </div>
           ) : (
             <div className="space-y-2.5 max-h-[380px] overflow-y-auto pr-1">
@@ -298,14 +298,14 @@ export default function Reports() {
                     className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-700 transition-all hover:shadow-lg hover:shadow-indigo-600/20 active:scale-95"
                   >
                     <FileDown className="w-4 h-4" />
-                    Export PDF
+                    Download PDF
                   </button>
                   <button
                     onClick={() => handleExportCsv(selectedReport)}
                     className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-semibold dark:bg-white/10 dark:hover:bg-white/15 bg-gray-100 hover:bg-gray-200 dark:text-white text-gray-700 transition-all active:scale-95 border dark:border-white/5 border-gray-250"
                   >
                     <FileSpreadsheet className="w-4 h-4" />
-                    Export CSV
+                    Download CSV
                   </button>
                 </div>
               </div>
@@ -380,8 +380,8 @@ export default function Reports() {
           ) : (
             <div className="card p-16 text-center border dark:border-white/5 border-gray-100 dark:bg-white/5 bg-white h-full flex flex-col items-center justify-center min-h-[400px] shadow-lg">
               <EmptyState
-                title="No Report Selected"
-                description="Select a compilation report from the sidebar log, or configure parameters and compile a new daily register report."
+                title="Select a Report to View"
+                description="Click on any report from the list on the left, or create a new one using the form above."
                 icon={FileText}
               />
             </div>
@@ -394,9 +394,9 @@ export default function Reports() {
         isOpen={isDeleteOpen}
         onConfirm={handleDeleteConfirm}
         onCancel={() => setIsDeleteOpen(false)}
-        title="Delete Report Record?"
-        message="Are you sure you want to permanently delete this report record? This action only removes the generated historical compilation log from database storage, and does not alter individual student registers."
-        confirmText="Delete Report Log"
+        title="Delete This Report?"
+        message="Are you sure you want to delete this report? This only removes the report, not the actual attendance records."
+        confirmText="Yes, Delete Report"
         variant="danger"
       />
     </PageWrapper>
