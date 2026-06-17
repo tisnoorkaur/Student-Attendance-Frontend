@@ -78,13 +78,23 @@ export default function Layout({ children }) {
         
         {/* Brand Header */}
         <div className="flex items-center gap-3 px-6 h-20 border-b dark:border-white/10 border-gray-100">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center text-white shadow-lg shadow-indigo-500/35">
+          <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-white shadow-lg ${
+            user?.role === 'admin'
+              ? 'bg-gradient-to-tr from-rose-600 to-pink-500 shadow-rose-500/35'
+              : 'bg-gradient-to-tr from-indigo-600 to-violet-500 shadow-indigo-500/35'
+          }`}>
             <GraduationCap className="w-6 h-6" />
           </div>
           <div>
-            <h1 className="font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 tracking-tight text-lg leading-tight">
-              Attendance
-            </h1>
+            {user?.role === 'admin' ? (
+              <h1 className="font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-rose-500 via-pink-500 to-red-500 tracking-tight text-lg leading-tight">
+                Admin Console
+              </h1>
+            ) : (
+              <h1 className="font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 tracking-tight text-lg leading-tight">
+                Attendance
+              </h1>
+            )}
             <p className="text-[10px] uppercase font-bold tracking-wider dark:text-slate-400 text-slate-500 -mt-0.5">
               Portal v1.5
             </p>
@@ -179,7 +189,14 @@ export default function Layout({ children }) {
             >
               <Menu className="w-6 h-6" />
             </button>
-            <h2 className="text-xl font-bold tracking-tight">{getPageTitle()}</h2>
+            <div className="flex items-center gap-2">
+              <h2 className="text-xl font-bold tracking-tight">{getPageTitle()}</h2>
+              {user?.role === 'admin' && (
+                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-rose-500/10 text-rose-500 border border-rose-500/20">
+                  Admin Access
+                </span>
+              )}
+            </div>
           </div>
 
           <div className="flex items-center gap-3">
@@ -232,12 +249,22 @@ export default function Layout({ children }) {
             >
               <div className="flex items-center justify-between mb-8">
                 <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center text-white">
+                  <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-white ${
+                    user?.role === 'admin'
+                      ? 'bg-gradient-to-tr from-rose-600 to-pink-500'
+                      : 'bg-gradient-to-tr from-indigo-600 to-violet-500'
+                  }`}>
                     <GraduationCap className="w-5 h-5" />
                   </div>
-                  <span className="font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
-                    Attendance Portal
-                  </span>
+                  {user?.role === 'admin' ? (
+                    <span className="font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-rose-500 via-pink-500 to-red-500">
+                      Admin Console
+                    </span>
+                  ) : (
+                    <span className="font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
+                      Attendance Portal
+                    </span>
+                  )}
                 </div>
                 <button
                   onClick={() => setMobileMenuOpen(false)}

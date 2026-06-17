@@ -97,6 +97,44 @@ export default function Login() {
           </p>
         </div>
 
+        {/* Tab Switcher */}
+        <div className="flex p-1 bg-gray-100 dark:bg-slate-800/80 rounded-xl mb-6 select-none border dark:border-white/5 border-gray-200">
+          <button
+            type="button"
+            onClick={() => {
+              setIsSignUp(false);
+              setError('');
+              setUsername('');
+              setPassword('');
+              setSchoolName('');
+            }}
+            className={`flex-1 py-2 rounded-lg text-xs font-bold transition-all duration-200 ${
+              !isSignUp
+                ? 'bg-white text-gray-900 shadow-md dark:bg-slate-700 dark:text-white'
+                : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'
+            }`}
+          >
+            Sign In
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setIsSignUp(true);
+              setError('');
+              setUsername('');
+              setPassword('');
+              setSchoolName('');
+            }}
+            className={`flex-1 py-2 rounded-lg text-xs font-bold transition-all duration-200 ${
+              isSignUp
+                ? 'bg-white text-gray-900 shadow-md dark:bg-slate-700 dark:text-white'
+                : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'
+            }`}
+          >
+            Sign Up
+          </button>
+        </div>
+
         {/* Error notice */}
         {error && (
           <motion.div
@@ -120,7 +158,7 @@ export default function Login() {
                 <Building className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-gray-400" />
                 <input
                   type="text"
-                  placeholder="e.g. Maple Leaf High School"
+                  placeholder="e.g. Greenwood High School"
                   value={schoolName}
                   onChange={(e) => setSchoolName(e.target.value)}
                   className="input-field pl-11 text-sm"
@@ -139,7 +177,7 @@ export default function Login() {
               <User className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-gray-400" />
               <input
                 type="text"
-                placeholder={isSignUp ? "e.g. maple_leaf" : "e.g. school1 or admin"}
+                placeholder={isSignUp ? "e.g. greenwood_high" : "e.g. admin or school1"}
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 className="input-field pl-11 text-sm"
@@ -181,67 +219,6 @@ export default function Login() {
             )}
           </button>
         </form>
-
-        {/* View Switcher toggle */}
-        <div className="mt-6 pt-4 border-t border-gray-100 dark:border-white/5 text-center text-xs">
-          {isSignUp ? (
-            <p className="text-gray-500 dark:text-gray-400">
-              Already registered?{' '}
-              <button
-                onClick={handleToggle}
-                className="text-indigo-600 dark:text-indigo-400 font-bold hover:underline"
-              >
-                Sign In here
-              </button>
-            </p>
-          ) : (
-            <p className="text-gray-500 dark:text-gray-400">
-              New school to attendance system?{' '}
-              <button
-                onClick={handleToggle}
-                className="text-indigo-600 dark:text-indigo-400 font-bold hover:underline"
-              >
-                Register here
-              </button>
-            </p>
-          )}
-        </div>
-      </motion.div>
-
-      {/* Demo Credentials Panel */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.3, duration: 0.5 }}
-        className="w-full max-w-md mt-6 p-5 rounded-2xl border border-gray-200 bg-white/70 backdrop-blur-md shadow-sm dark:bg-slate-900/60 dark:border-white/5"
-      >
-        <h3 className="text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-white flex items-center gap-2 mb-3">
-          <Key className="w-4 h-4 text-indigo-500" />
-          Demo Access Credentials
-        </h3>
-        <div className="grid grid-cols-1 gap-2.5 text-xs text-gray-600 dark:text-gray-400">
-          <div className="p-2.5 rounded-lg bg-gray-50 border border-gray-100 flex justify-between items-center dark:bg-white/5 dark:border-transparent">
-            <div>
-              <p className="font-semibold text-gray-800 dark:text-slate-200">Admin Account</p>
-              <p className="text-[10px] text-gray-500">Full control & management access</p>
-            </div>
-            <div className="text-right">
-              <p>User: <code className="bg-indigo-50 text-indigo-600 px-1 py-0.5 rounded font-mono dark:bg-indigo-500/10 dark:text-indigo-400">admin</code></p>
-              <p className="mt-0.5">Pass: <code className="bg-indigo-50 text-indigo-600 px-1 py-0.5 rounded font-mono dark:bg-indigo-500/10 dark:text-indigo-400">admin</code></p>
-            </div>
-          </div>
-          
-          <div className="p-2.5 rounded-lg bg-gray-50 border border-gray-100 flex justify-between items-center dark:bg-white/5 dark:border-transparent">
-            <div>
-              <p className="font-semibold text-gray-800 dark:text-slate-200">School Account (Greenwood)</p>
-              <p className="text-[10px] text-gray-500">Take attendance & view reports only</p>
-            </div>
-            <div className="text-right">
-              <p>User: <code className="bg-indigo-50 text-indigo-600 px-1 py-0.5 rounded font-mono dark:bg-indigo-500/10 dark:text-indigo-400">school1</code></p>
-              <p className="mt-0.5">Pass: <code className="bg-indigo-50 text-indigo-600 px-1 py-0.5 rounded font-mono dark:bg-indigo-500/10 dark:text-indigo-400">schoolpassword</code></p>
-            </div>
-          </div>
-        </div>
       </motion.div>
     </div>
   )
