@@ -23,6 +23,7 @@ export default function Classes() {
   const { classes, isLoading, fetchClasses, addClass, updateClass, deleteClass } = useClassStore();
   const { user } = useAuthStore();
   const isAdmin = user?.role === 'admin';
+  const canManage = user?.role === 'admin' || user?.role === 'school';
 
   // Roster enrollment counts per class section mapping
   const [studentCounts, setStudentCounts] = useState({});
@@ -113,8 +114,8 @@ export default function Classes() {
 
   return (
     <PageWrapper className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-      {/* Left Column: Form Card (Admin Only) */}
-      {isAdmin && (
+      {/* Left Column: Form Card (Admin & Schools) */}
+      {canManage && (
         <div className="lg:col-span-1 space-y-6">
           <div className="card p-6 border border-gray-150 dark:border-white/5 dark:bg-white/5 bg-white space-y-5 shadow-lg">
             <h2 className="font-extrabold text-lg dark:text-white text-gray-900 flex items-center gap-2 pb-2 border-b dark:border-white/5 border-gray-100">
@@ -177,7 +178,7 @@ export default function Classes() {
       )}
 
       {/* Right Column: Classes List Panel */}
-      <div className={isAdmin ? "lg:col-span-2 space-y-6" : "lg:col-span-3 space-y-6"}>
+      <div className={canManage ? "lg:col-span-2 space-y-6" : "lg:col-span-3 space-y-6"}>
         <div className="flex items-center justify-between">
           <h2 className="font-extrabold text-xl dark:text-white text-gray-900 flex items-center gap-2.5">
             <GraduationCap className="w-6 h-6 text-indigo-500" />
@@ -193,8 +194,8 @@ export default function Classes() {
         ) : classes.length === 0 ? (
           <div className="card p-16 text-center border dark:border-white/5 border-gray-100 dark:bg-white/5 bg-white shadow-md">
             <EmptyState
-              title={isAdmin ? "No Classes Created Yet" : "No Classes Assigned"}
-              description={isAdmin ? "You need to create at least one class before adding students. Use the form on the left to create your first class (e.g. Class 10-A)." : "There are no classes assigned to your school. Please contact the administrator to assign classes."}
+              title={canManage ? "No Classes Created Yet" : "No Classes Assigned"}
+              description={canManage ? "You need to create at least one class before adding students. Use the form on the left to create your first class (e.g. Class 10-A)." : "There are no classes assigned to your school. Please contact the administrator to assign classes."}
               icon={GraduationCap}
             />
           </div>
@@ -217,7 +218,7 @@ export default function Classes() {
                         <div className="px-3 py-1.5 rounded-xl dark:bg-indigo-500/10 bg-indigo-50 text-indigo-600 dark:text-indigo-400 font-extrabold text-sm border dark:border-indigo-500/10 border-indigo-100">
                           Class {cls.name}-{cls.section}
                         </div>
-                        {isAdmin && (
+                        {canManage && (
                           <div className="flex items-center gap-1">
                             <button
                               onClick={() => handleEdit(cls)}

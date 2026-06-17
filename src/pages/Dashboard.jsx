@@ -244,6 +244,39 @@ export default function Dashboard() {
           <h2 className="text-lg font-bold dark:text-white text-gray-900 flex items-center gap-2">
             🚀 Action Center
           </h2>
+
+          {/* Easy Access Onboarding Guide for New School Users */}
+          {!isAdmin && (stats.totalClasses === 0 || stats.totalStudents === 0) && (
+            <div className="p-5 rounded-2xl border dark:border-indigo-500/20 border-indigo-150 bg-indigo-500/5 space-y-3">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-lg bg-indigo-500/10 flex items-center justify-center text-indigo-500 font-bold">
+                  💡
+                </div>
+                <div>
+                  <h3 className="font-bold text-sm dark:text-white text-gray-900">
+                    Welcome to your School Portal!
+                  </h3>
+                  <p className="text-xs dark:text-gray-400 text-gray-500 mt-0.5">
+                    Follow these quick steps to set up your school account:
+                  </p>
+                </div>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3 pt-1 text-xs">
+                <div className={`p-3 rounded-xl border transition-colors ${stats.totalClasses === 0 ? 'dark:border-indigo-500/40 border-indigo-300 bg-indigo-500/10 font-semibold' : 'dark:border-white/5 border-gray-200 dark:bg-white/5 bg-gray-50/50 opacity-60'}`}>
+                  <span className="font-extrabold text-indigo-500 block mb-0.5">Step 1: Add Class</span>
+                  Create your grade levels and sections (e.g. 10-A, 11-B).
+                </div>
+                <div className={`p-3 rounded-xl border transition-colors ${stats.totalClasses > 0 && stats.totalStudents === 0 ? 'dark:border-indigo-500/40 border-indigo-300 bg-indigo-500/10 font-semibold' : 'dark:border-white/5 border-gray-200 dark:bg-white/5 bg-gray-50/50 opacity-60'}`}>
+                  <span className="font-extrabold text-indigo-500 block mb-0.5">Step 2: Add Student</span>
+                  Add students to your classes or import profiles in bulk.
+                </div>
+                <div className={`p-3 rounded-xl border transition-colors ${stats.totalClasses > 0 && stats.totalStudents > 0 ? 'dark:border-indigo-500/40 border-indigo-300 bg-indigo-500/10 font-semibold' : 'dark:border-white/5 border-gray-200 dark:bg-white/5 bg-gray-50/50 opacity-60'}`}>
+                  <span className="font-extrabold text-indigo-500 block mb-0.5">Step 3: Take Attendance</span>
+                  Start recording attendance for your students!
+                </div>
+              </div>
+            </div>
+          )}
           
           {isAdmin ? (
             // Admin Quick Actions
@@ -256,7 +289,7 @@ export default function Dashboard() {
                   <School className="w-6 h-6" />
                 </div>
                 <h3 className="font-semibold text-lg dark:text-white text-gray-900 group-hover:text-indigo-500 dark:group-hover:text-indigo-400 transition-colors">
-                  🏫 Manage Schools
+                  🏫 Manage School
                 </h3>
                 <p className="text-sm dark:text-gray-400 text-gray-500 mt-1">
                   Create, view, and delete school credentials and log accounts.
@@ -271,7 +304,7 @@ export default function Dashboard() {
                   <GraduationCap className="w-6 h-6" />
                 </div>
                 <h3 className="font-semibold text-lg dark:text-white text-gray-900 group-hover:text-amber-500 dark:group-hover:text-amber-400 transition-colors">
-                  📚 Setup Classes
+                  📚 Classes
                 </h3>
                 <p className="text-sm dark:text-gray-400 text-gray-500 mt-1">
                   Define school grades and sections globally.
@@ -286,7 +319,7 @@ export default function Dashboard() {
                   <PlusCircle className="w-6 h-6" />
                 </div>
                 <h3 className="font-semibold text-lg dark:text-white text-gray-900 group-hover:text-emerald-500 dark:group-hover:text-emerald-400 transition-colors">
-                  👤 Enroll Students
+                  👤 Students
                 </h3>
                 <p className="text-sm dark:text-gray-400 text-gray-500 mt-1">
                   Enroll student profiles into classes globally. Supports CSV imports.
@@ -312,21 +345,6 @@ export default function Dashboard() {
             // School/Teacher Quick Actions
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <Link
-                to="/attendance"
-                className="group relative overflow-hidden rounded-2xl p-6 transition-all duration-300 card hover:scale-[1.02] border hover:border-indigo-500/20 hover:shadow-xl hover:shadow-indigo-500/5 dark:bg-white/5 bg-white border-gray-100 dark:border-white/5"
-              >
-                <div className="w-12 h-12 rounded-xl gradient-primary flex items-center justify-center text-white mb-4 group-hover:scale-110 transition-transform duration-300">
-                  <CalendarCheck className="w-6 h-6" />
-                </div>
-                <h3 className="font-semibold text-lg dark:text-white text-gray-900 group-hover:text-indigo-500 dark:group-hover:text-indigo-400 transition-colors">
-                  ✅ Take Attendance
-                </h3>
-                <p className="text-sm dark:text-gray-400 text-gray-500 mt-1">
-                  Mark student attendance logs for today's classes.
-                </p>
-              </Link>
-
-              <Link
                 to="/classes"
                 className="group relative overflow-hidden rounded-2xl p-6 transition-all duration-300 card hover:scale-[1.02] border hover:border-amber-500/20 hover:shadow-xl hover:shadow-amber-500/5 dark:bg-white/5 bg-white border-gray-100 dark:border-white/5"
               >
@@ -334,10 +352,10 @@ export default function Dashboard() {
                   <GraduationCap className="w-6 h-6" />
                 </div>
                 <h3 className="font-semibold text-lg dark:text-white text-gray-900 group-hover:text-amber-500 dark:group-hover:text-amber-400 transition-colors">
-                  📚 My Classes
+                  ➕ Add Class
                 </h3>
                 <p className="text-sm dark:text-gray-400 text-gray-500 mt-1">
-                  Browse your school's active grade lists and class sections.
+                  Browse and manage your school's active grade lists and class sections.
                 </p>
               </Link>
 
@@ -349,10 +367,25 @@ export default function Dashboard() {
                   <Users className="w-6 h-6" />
                 </div>
                 <h3 className="font-semibold text-lg dark:text-white text-gray-900 group-hover:text-emerald-500 dark:group-hover:text-emerald-400 transition-colors">
-                  👤 My Students
+                  👤 Add Student
                 </h3>
                 <p className="text-sm dark:text-gray-400 text-gray-500 mt-1">
-                  View full lists of enrolled student profiles.
+                  View and manage enrolled student profiles, enroll new students, or import from CSV.
+                </p>
+              </Link>
+
+              <Link
+                to="/attendance"
+                className="group relative overflow-hidden rounded-2xl p-6 transition-all duration-300 card hover:scale-[1.02] border hover:border-indigo-500/20 hover:shadow-xl hover:shadow-indigo-500/5 dark:bg-white/5 bg-white border-gray-100 dark:border-white/5"
+              >
+                <div className="w-12 h-12 rounded-xl gradient-primary flex items-center justify-center text-white mb-4 group-hover:scale-110 transition-transform duration-300">
+                  <CalendarCheck className="w-6 h-6" />
+                </div>
+                <h3 className="font-semibold text-lg dark:text-white text-gray-900 group-hover:text-indigo-500 dark:group-hover:text-indigo-400 transition-colors">
+                  ✅ Take Attendance
+                </h3>
+                <p className="text-sm dark:text-gray-400 text-gray-500 mt-1">
+                  Mark student attendance logs for today's classes.
                 </p>
               </Link>
 

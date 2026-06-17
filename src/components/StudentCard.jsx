@@ -6,6 +6,7 @@ import useAuthStore from '@/store/useAuthStore'
 export default function StudentCard({ student, onEdit, onDelete }) {
   const { user } = useAuthStore()
   const isAdmin = user?.role === 'admin'
+  const canManage = user?.role === 'admin' || user?.role === 'school'
 
   return (
     <motion.div
@@ -43,7 +44,7 @@ export default function StudentCard({ student, onEdit, onDelete }) {
         </div>
 
         {/* Actions */}
-        {isAdmin && (
+        {canManage && (
           <div className="flex items-center gap-1 transition-opacity duration-200">
             <button
               onClick={() => onEdit(student)}

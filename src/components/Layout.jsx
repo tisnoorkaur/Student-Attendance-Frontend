@@ -26,30 +26,25 @@ export default function Layout({ children }) {
 
   // Dynamically configure navItems based on role
   const getNavItems = () => {
-    const items = [
-      { path: '/', label: 'Home', icon: LayoutDashboard, hint: 'Overview & quick actions' },
-      { path: '/attendance', label: 'Take Attendance', icon: CalendarCheck, hint: 'Mark daily attendance' },
-    ]
-
     if (user?.role === 'admin') {
-      items.push(
+      return [
+        { path: '/', label: 'Home', icon: LayoutDashboard, hint: 'Overview & quick actions' },
+        { path: '/schools', label: 'Manage School', icon: School, hint: 'Manage school accounts' },
+        { path: '/classes', label: 'Classes', icon: GraduationCap, hint: 'View & configure classes' },
+        { path: '/students', label: 'Students', icon: UserPlus, hint: 'View & configure students' },
+        { path: '/reports', label: 'Global Reports', icon: FileSpreadsheet, hint: 'Generate & export reports' },
+        { path: '/analytics', label: 'Analytics', icon: BarChart3, hint: 'Trends & insights' }
+      ]
+    } else {
+      return [
+        { path: '/', label: 'Home', icon: LayoutDashboard, hint: 'Overview & quick actions' },
         { path: '/classes', label: 'Add Class', icon: GraduationCap, hint: 'Create & manage classes' },
         { path: '/students', label: 'Add Student', icon: UserPlus, hint: 'Enroll & manage students' },
-        { path: '/schools', label: 'Manage Schools', icon: School, hint: 'Manage school accounts' }
-      )
-    } else {
-      items.push(
-        { path: '/classes', label: 'View Classes', icon: GraduationCap, hint: 'See enrolled classes' },
-        { path: '/students', label: 'View Students', icon: UserPlus, hint: 'See enrolled students' }
-      )
+        { path: '/attendance', label: 'Take Attendance', icon: CalendarCheck, hint: 'Mark daily attendance' },
+        { path: '/reports', label: 'View Reports', icon: FileSpreadsheet, hint: 'Generate & export reports' },
+        { path: '/analytics', label: 'Analytics', icon: BarChart3, hint: 'Trends & insights' }
+      ]
     }
-
-    items.push(
-      { path: '/reports', label: 'View Reports', icon: FileSpreadsheet, hint: 'Generate & export reports' },
-      { path: '/analytics', label: 'Analytics', icon: BarChart3, hint: 'Trends & insights' }
-    )
-
-    return items
   }
 
   const navItems = getNavItems()
@@ -75,14 +70,13 @@ export default function Layout({ children }) {
       <aside className="hidden md:flex flex-col w-64 border-r transition-colors duration-300
         dark:bg-slate-900/60 dark:border-white/10
         bg-white/80 border-gray-200 backdrop-blur-md sticky top-0 h-screen z-20">
-        
+
         {/* Brand Header */}
         <div className="flex items-center gap-3 px-6 h-20 border-b dark:border-white/10 border-gray-100">
-          <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-white shadow-lg ${
-            user?.role === 'admin'
+          <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-white shadow-lg ${user?.role === 'admin'
               ? 'bg-gradient-to-tr from-rose-600 to-pink-500 shadow-rose-500/35'
               : 'bg-gradient-to-tr from-indigo-600 to-violet-500 shadow-indigo-500/35'
-          }`}>
+            }`}>
             <GraduationCap className="w-6 h-6" />
           </div>
           <div>
@@ -173,12 +167,12 @@ export default function Layout({ children }) {
          Main Content Area
          ======================================== */}
       <div className="flex-1 flex flex-col min-w-0">
-        
+
         {/* Top Header Bar */}
         <header className="h-20 border-b flex items-center justify-between px-6 sticky top-0 transition-colors duration-300 z-10
           dark:bg-slate-900/60 dark:border-white/10 dark:text-white
           bg-white/80 border-gray-200 text-slate-800 backdrop-blur-md">
-          
+
           <div className="flex items-center gap-4">
             {/* Mobile Menu Button */}
             <button
@@ -201,10 +195,9 @@ export default function Layout({ children }) {
 
           <div className="flex items-center gap-3">
             <div className={`hidden sm:flex items-center gap-2 px-3.5 py-1.5 rounded-full border text-xs font-semibold select-none
-              ${
-                isOnline
-                  ? 'dark:bg-emerald-500/10 dark:text-emerald-400 dark:border-emerald-500/20 bg-emerald-50 text-emerald-700 border-emerald-200'
-                  : 'dark:bg-amber-500/10 dark:text-amber-400 dark:border-amber-500/20 bg-amber-50 text-amber-700 border-amber-200'
+              ${isOnline
+                ? 'dark:bg-emerald-500/10 dark:text-emerald-400 dark:border-emerald-500/20 bg-emerald-50 text-emerald-700 border-emerald-200'
+                : 'dark:bg-amber-500/10 dark:text-amber-400 dark:border-amber-500/20 bg-amber-50 text-amber-700 border-amber-200'
               }`}
             >
               <span className="relative flex h-2 w-2">
@@ -249,11 +242,10 @@ export default function Layout({ children }) {
             >
               <div className="flex items-center justify-between mb-8">
                 <div className="flex items-center gap-2">
-                  <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-white ${
-                    user?.role === 'admin'
+                  <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-white ${user?.role === 'admin'
                       ? 'bg-gradient-to-tr from-rose-600 to-pink-500'
                       : 'bg-gradient-to-tr from-indigo-600 to-violet-500'
-                  }`}>
+                    }`}>
                     <GraduationCap className="w-5 h-5" />
                   </div>
                   {user?.role === 'admin' ? (
@@ -354,10 +346,9 @@ export default function Layout({ children }) {
               key={item.path}
               to={item.path}
               className={`flex flex-col items-center justify-center gap-1 w-12 h-12 rounded-xl transition-all duration-200
-                ${
-                  isActive
-                    ? 'text-indigo-500 dark:text-indigo-400'
-                    : 'text-gray-400 hover:text-gray-500 dark:hover:text-gray-300'
+                ${isActive
+                  ? 'text-indigo-500 dark:text-indigo-400'
+                  : 'text-gray-400 hover:text-gray-500 dark:hover:text-gray-300'
                 }`}
             >
               <Icon className="w-5 h-5" />

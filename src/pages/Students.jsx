@@ -47,6 +47,7 @@ export default function Students() {
   const { classes, fetchClasses } = useClassStore();
   const { user } = useAuthStore();
   const isAdmin = user?.role === 'admin';
+  const canManage = user?.role === 'admin' || user?.role === 'school';
 
   // Modals state
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -130,11 +131,11 @@ export default function Students() {
             Your Students ({total})
           </h1>
           <p className="text-sm dark:text-gray-400 text-gray-500 mt-0.5">
-            {isAdmin ? 'Add, edit, or remove students from your classes.' : 'View enrolled students in your classes.'}
+            {canManage ? 'Add, edit, or remove students from your classes.' : 'View enrolled students in your classes.'}
           </p>
         </div>
 
-        {isAdmin && (
+        {canManage && (
           <div className="flex items-center gap-2.5">
             <button
               onClick={() => setIsImportOpen(true)}
@@ -201,7 +202,7 @@ export default function Students() {
             title={total === 0 ? "No Students Added Yet" : "No Matching Students"}
             description={
               total === 0
-                ? (isAdmin ? "You haven't added any students yet. Click the '+ Add Student' button above to add your first student." : "There are no students enrolled in your school yet. Please ask the administrator to enroll students.")
+                ? (canManage ? "You haven't added any students yet. Click the '+ Add Student' button above to add your first student." : "There are no students enrolled in your school yet. Please ask the administrator to enroll students.")
                 : "No students match your search. Try changing the search text or class filter."
             }
             icon={Users}
@@ -226,7 +227,7 @@ export default function Students() {
           </motion.div>
 
           {/* Pagination bar */}
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-xl dark:bg-white/5 bg-gray-50 border dark:border-white/5 border-gray-150">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-xl dark:bg-white/5 bg-gray-55 border dark:border-white/5 border-gray-150">
             <span className="text-xs dark:text-gray-400 text-gray-500">
               Showing <strong>{startIdx}</strong> to <strong>{endIdx}</strong> of <strong>{total}</strong> students
             </span>
@@ -276,8 +277,8 @@ export default function Students() {
         </div>
       )}
 
-      {/* Student Form Modal (Admin Only) */}
-      {isAdmin && (
+      {/* Student Form Modal (Admin & Schools) */}
+      {canManage && (
         <Modal
           isOpen={isFormOpen}
           onClose={() => setIsFormOpen(false)}
@@ -292,8 +293,8 @@ export default function Students() {
         </Modal>
       )}
 
-      {/* Bulk Import Modal (Admin Only) */}
-      {isAdmin && (
+      {/* Bulk Import Modal (Admin & Schools) */}
+      {canManage && (
         <Modal
           isOpen={isImportOpen}
           onClose={() => setIsImportOpen(false)}
@@ -307,8 +308,8 @@ export default function Students() {
         </Modal>
       )}
 
-      {/* Confirm Delete Dialog (Admin Only) */}
-      {isAdmin && (
+      {/* Confirm Delete Dialog (Admin & Schools) */}
+      {canManage && (
         <ConfirmDialog
           isOpen={isDeleteOpen}
           onConfirm={handleDeleteConfirm}
