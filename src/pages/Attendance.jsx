@@ -202,7 +202,7 @@ export default function Attendance() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left Column: Taking Interface */}
           <div className="lg:col-span-2 space-y-6">
-            
+
             {/* Stats Roster Summary */}
             <div className="grid grid-cols-4 gap-4 p-4 rounded-2xl dark:bg-white/5 bg-gray-50 border dark:border-white/5 border-gray-150">
               <div className="text-center py-1 border-r dark:border-white/5 border-gray-200">
@@ -270,22 +270,7 @@ export default function Attendance() {
                   </AnimatePresence>
 
                   {/* Physical marking click buttons */}
-                  <div className="flex items-center gap-6 w-full justify-center">
-                    <button
-                      onClick={() => markStudent(currentStudent.id, 'absent')}
-                      className="w-14 h-14 rounded-full bg-rose-50 dark:bg-rose-500/10 text-rose-500 border border-rose-200 dark:border-rose-500/20 flex items-center justify-center hover:scale-110 active:scale-95 transition-all shadow-lg hover:bg-rose-100 dark:hover:bg-rose-500/20"
-                      title="Mark Absent [Left Arrow]"
-                    >
-                      <X className="w-6 h-6 stroke-[3px]" />
-                    </button>
-                    <button
-                      onClick={() => markStudent(currentStudent.id, 'present')}
-                      className="w-14 h-14 rounded-full bg-emerald-50 dark:bg-emerald-500/10 text-emerald-500 border border-emerald-200 dark:border-emerald-500/20 flex items-center justify-center hover:scale-110 active:scale-95 transition-all shadow-lg hover:bg-emerald-100 dark:hover:bg-emerald-500/20"
-                      title="Mark Present [Right Arrow]"
-                    >
-                      <Check className="w-6 h-6 stroke-[3px]" />
-                    </button>
-                  </div>
+
                 </div>
               ) : (
                 <div className="text-center space-y-4 py-8">
@@ -294,7 +279,7 @@ export default function Attendance() {
                   <p className="text-xs dark:text-gray-400 text-gray-500 max-w-xs mx-auto">
                     You've marked all students in Class {selectedClass}. Click the button below to save.
                   </p>
-                  
+
                   <button
                     onClick={handleSave}
                     disabled={isSaving}
@@ -396,10 +381,9 @@ export default function Attendance() {
                                 <button
                                   onClick={() => updateMarking(student.id, isPresent ? 'absent' : 'present')}
                                   className={`px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wide transition-all border active:scale-95
-                                    ${
-                                      isPresent
-                                        ? 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20'
-                                        : 'bg-rose-500/10 text-rose-500 border-rose-500/20'
+                                    ${isPresent
+                                      ? 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20'
+                                      : 'bg-rose-500/10 text-rose-500 border-rose-500/20'
                                     }`}
                                 >
                                   {status}
