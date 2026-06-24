@@ -270,7 +270,28 @@ export default function Attendance() {
                   </AnimatePresence>
 
                   {/* Physical marking click buttons */}
+                  <div className="flex items-center justify-center gap-6 w-full mt-6">
 
+                    {/* Absent button */}
+                    <button
+                      onClick={() => markStudent(currentStudent.id, 'absent')}
+                      className="w-14 h-14 rounded-full bg-rose-50 dark:bg-rose-500/10 text-rose-500 border border-rose-200 dark:border-rose-500/20 flex items-center justify-center hover:scale-110 active:scale-95 transition-all shadow-md"
+                      title="Mark Absent [Left Arrow]"
+                    >
+                      <X className="w-6 h-6 stroke-[3px]" />
+                    </button>
+
+                    {/* Present button */}
+                    <button
+                      onClick={() => markStudent(currentStudent.id, 'present')}
+                      className="px-16 py-5 rounded-full bg-emerald-500 text-white flex items-center gap-4 text-2xl font-bold shadow-lg hover:scale-[1.02] active:scale-95 transition-all"
+                      title="Mark Present [Right Arrow]"
+                    >
+                      <Check className="w-8 h-8 stroke-[3px]" />
+                      Present
+                    </button>
+
+                  </div>
                 </div>
               ) : (
                 <div className="text-center space-y-4 py-8">
